@@ -61,7 +61,7 @@ public class ImageProcessor
     public void restoreImage() {
         image = originalImage;
         originalImage = deepCopy(originalImage);
-        gistoArr =  new int[255];
+        gistoArr =  new int[256];
         ip.repaint();
     }
 

@@ -25,7 +25,6 @@ public class GistoDialog extends JDialog
 
         panel = new JPanel();
         this.add(panel, BorderLayout.CENTER);
-        repaint();
     }
 
     @Override

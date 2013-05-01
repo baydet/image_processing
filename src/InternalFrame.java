@@ -52,7 +52,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         sp = new ImagePanel();
         this.add(sp);
 
-
+        this.setImage("/Users/astrokin/Desktop/Lenna.png");
     }
 
     public void setImage(String path)
