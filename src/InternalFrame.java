@@ -20,6 +20,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String TO_GRAYSCALE = "to grayscale";
     public static final String RESTORE = "restore";
     public static final String INVERT = "invert";
+    public static final String GISTOGRAMM = "gistogramm";
     private ImagePanel sp;
     private final JMenu menu;
 
@@ -41,6 +42,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
 
         addMenu(TO_GRAYSCALE);
         addMenu(INVERT);
+        addMenu(GISTOGRAMM);
         addMenu(RESTORE);
 
         JMenuBar menuBar = new JMenuBar();
@@ -72,5 +74,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.restore();
         else if(item.getText().equals(INVERT))
             InternalFrame.this.sp.imageProcessor.invert();
+        else if(item.getText().equals(GISTOGRAMM))
+            InternalFrame.this.sp.imageProcessor.getGistogramm();
     }
 }

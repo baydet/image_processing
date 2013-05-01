@@ -15,6 +15,7 @@ public class ImageProcessor
     private ImagePanel ip;
     private BufferedImage image;
     private BufferedImage originalImage;
+    private int [] gistoArr =  new int[256];
 
 
     public ImageProcessor(BufferedImage image)
@@ -60,6 +61,7 @@ public class ImageProcessor
     public void restoreImage() {
         image = originalImage;
         originalImage = deepCopy(originalImage);
+        gistoArr =  new int[255];
         ip.repaint();
     }
 
@@ -80,5 +82,19 @@ public class ImageProcessor
             }
         }
         ip.repaint();
+    }
+
+    public void getGistogramm()
+    {
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                Color c = new Color(image.getRGB(i, j));
+                int index = c.getRed();
+                gistoArr[index]++;
+            }
+        }
+        GistoDialog d = new GistoDialog(gistoArr);
     }
 }

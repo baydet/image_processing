@@ -31,6 +31,11 @@ public class MainWnd extends JFrame implements ActionListener {
         this.createDesktop();
         this.createMenus();
         this.internalFrames = new ArrayList<JInternalFrame>();
+        try {
+            this.createInternalWnd();
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createMenus()
