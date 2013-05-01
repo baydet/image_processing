@@ -47,4 +47,17 @@ public class ImagePanel extends JPanel
     public void restore() {
         imageProcessor.restoreImage();
     }
+
+    public void manualBinarisation() {
+        Object result = JOptionPane.showInputDialog(this, "enter binarisation bound:");
+        try{
+            int r = Integer.parseInt((String) result);
+            if (r > 255 || r < 0)
+                return;
+            imageProcessor.toBinary(r);
+        }
+        catch (Exception ignored)
+        {
+        }
+    }
 }

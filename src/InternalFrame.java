@@ -1,11 +1,7 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,14 +17,25 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String RESTORE = "restore";
     public static final String INVERT = "invert";
     public static final String GISTOGRAMM = "gistogramm";
+    public static final String MANUAL = "manual";
+    public static final String GLOBAL_AUTO = "global auto";
+    public static final String LOCAL_AUTO = "local auto";
+    private final JMenu secondMenu;
     private ImagePanel sp;
-    private final JMenu menu;
+    private final JMenu firstMenu;
 
-    public void addMenu(String name)
+    public void addToFirstMenu(String name)
     {
         JMenuItem invert = new JMenuItem(name);
         invert.addActionListener(this);
-        menu.add(invert);
+        firstMenu.add(invert);
+    }
+
+    public void addToSecondMenu(String name)
+    {
+        JMenuItem invert = new JMenuItem(name);
+        invert.addActionListener(this);
+        secondMenu.add(invert);
     }
 
     public InternalFrame(String s) {
@@ -38,15 +45,23 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         this.setMaximizable(true);
         this.setResizable(true);
 
-        menu = new JMenu("Actions");
+        firstMenu = new JMenu("Actions");
+        secondMenu = new JMenu("Binarisation");
 
-        addMenu(TO_GRAYSCALE);
-        addMenu(INVERT);
-        addMenu(GISTOGRAMM);
-        addMenu(RESTORE);
+        addToFirstMenu(TO_GRAYSCALE);
+        addToFirstMenu(INVERT);
+        addToFirstMenu(GISTOGRAMM);
+        addToFirstMenu(RESTORE);
+
+        addToSecondMenu(MANUAL);
+        addToSecondMenu(GLOBAL_AUTO);
+        addToSecondMenu(LOCAL_AUTO);
+
 
         JMenuBar menuBar = new JMenuBar();
-        menuBar.add(menu);
+        menuBar.add(firstMenu);
+        menuBar.add(secondMenu);
+
         this.setJMenuBar(menuBar);
 
         sp = new ImagePanel();
@@ -76,5 +91,12 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.imageProcessor.invert();
         else if(item.getText().equals(GISTOGRAMM))
             InternalFrame.this.sp.imageProcessor.getGistogramm();
+        else if(item.getText().equals(MANUAL))
+            InternalFrame.this.sp.manualBinarisation();
+//            InternalFrame.this.sp.imageProcessor.getGistogramm();
+        else if(item.getText().equals(MANUAL))  {}
+//            InternalFrame.this.sp.imageProcessor.getGistogramm();
+        else if(item.getText().equals(MANUAL))    {}
+//            InternalFrame.this.sp.imageProcessor.getGistogramm();
     }
 }

@@ -97,4 +97,19 @@ public class ImageProcessor
         }
         GistoDialog d = new GistoDialog(gistoArr);
     }
+
+    public void toBinary(int bound)
+    {
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                Color c = new Color(image.getRGB(i, j));
+                int gray = c.getRed();
+                gray = gray < bound ? 0 : 255;
+                image.setRGB(i, j, new Color(gray, gray, gray).getRGB());
+            }
+        }
+        ip.repaint();
+    }
 }
