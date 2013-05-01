@@ -187,9 +187,11 @@ public class ImageProcessor
         int step = COLOR_COUNT/segments;
         int l = 0;
         int r = 0;
-        while (l < COLOR_COUNT - step)
+        while (r < COLOR_COUNT-1)
         {
             r += step;
+            if (r > 255)
+                r = 255;
             int m = (l + r)/2;
             s.add(new Segment(l, r, m));
             l += step;
