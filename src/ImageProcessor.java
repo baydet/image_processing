@@ -21,6 +21,8 @@ class Segment
         super();
         l = _l; r = _r; b = _b;
     }
+
+    public Segment() {}
 }
 
 public class ImageProcessor
@@ -153,10 +155,7 @@ public class ImageProcessor
         int border = Integer.MAX_VALUE;
         while (true)
         {
-            for (int i = 1; i < COLOR_COUNT-1; ++i)
-            {
-                gistoArr[i] = (gistoArr[i-1]+gistoArr[i+1])/2;
-            }
+            round();
             peakCount = 0;
             border = COLOR_COUNT;
             for (int i = 1; i < COLOR_COUNT-1; ++i)
@@ -175,6 +174,13 @@ public class ImageProcessor
         toBinary(border);
     }
 
+    private void round() {
+        for (int i = 1; i < COLOR_COUNT-1; ++i)
+        {
+            gistoArr[i] = (gistoArr[i-1]+gistoArr[i+1])/2;
+        }
+    }
+
     public void simplySegmentation(int segments)
     {
         ArrayList<Segment> s = new ArrayList<Segment>();
@@ -189,6 +195,56 @@ public class ImageProcessor
             l += step;
         }
         this.applySegmentation(s);
+    }
+
+    public void roundNAndSegment(int times)
+    {
+        restoreImage();
+        toGrayscale();
+        buildGisto();
+
+        for (int i = 0; i < times; ++i)
+            round();
+
+        ArrayList<Segment> list =  makeSegments();
+        applySegmentation(list);
+    }
+
+    public void roundTillNSegments(int segments) {
+        restoreImage();
+        toGrayscale();
+        buildGisto();
+
+        ArrayList<Segment> list = null;
+
+        do
+        {
+            round();
+            list = makeSegments();
+        }while (list.size() > segments);
+
+        applySegmentation(list);
+    }
+
+
+    private ArrayList<Segment> makeSegments()
+    {
+        ArrayList<Segment> list = new ArrayList<Segment>();
+        Segment s = new Segment();
+        s.l = gistoArr[0];
+        for (int i = 1; i < COLOR_COUNT; ++i)
+        {
+            if (gistoArr[i] < gistoArr[i-1] && gistoArr[i] < gistoArr[i+1])
+                s.b = i;
+            if (gistoArr[i] > gistoArr[i-1] && gistoArr[i] > gistoArr[i+1])
+            {
+                s.r = i;
+                list.add(s);
+                s = new Segment();
+                s.l = i;
+            }
+        }
+        return list;
     }
 
     private void applySegmentation(ArrayList<Segment> list)
@@ -213,4 +269,5 @@ public class ImageProcessor
         }
         ip.repaint();
     }
+
 }

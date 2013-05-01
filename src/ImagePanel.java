@@ -79,10 +79,10 @@ public class ImagePanel extends JPanel
                 return;
             if(type.equals(SIMPLY_SEGM))
                 imageProcessor.simplySegmentation(r);
-            else if(type.equals(ROUND_N_TIMES)){}
-//                request = "Enter rounding count";
-            else if(type.equals(ROUND_TO_N_SEGM))    {}
-//                request = "Enter smart segments count";
+            else if(type.equals(ROUND_N_TIMES))
+                imageProcessor.roundNAndSegment(r);
+            else if(type.equals(ROUND_TO_N_SEGM))
+                imageProcessor.roundTillNSegments(r);
         }
         catch (Exception ignored)
         {

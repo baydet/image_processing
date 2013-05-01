@@ -116,8 +116,9 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         else if(item.getText().equals(MANUAL))    {}
         else if(item.getText().equals(SIMPLY_SEGM))
             InternalFrame.this.sp.makeSegmentation(ImagePanel.SIMPLY_SEGM);
-        else if(item.getText().equals(ROUND_N_TIMES))    {}
-        else if(item.getText().equals(ROUND_TO_N_SEGM))    {}
-//            InternalFrame.this.sp.imageProcessor.getGistogramm();
+        else if(item.getText().equals(ROUND_N_TIMES))
+            InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_N_TIMES);
+        else if(item.getText().equals(ROUND_TO_N_SEGM))
+            InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_TO_N_SEGM);
     }
 }
