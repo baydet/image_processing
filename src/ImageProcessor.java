@@ -93,6 +93,7 @@ public class ImageProcessor
 
     public void buildGisto()
     {
+//        this.gistoArr = new int[256];
         for (int i = 0; i < image.getWidth(); ++i)
         {
             for (int j = 0; j < image.getHeight(); ++j)
@@ -136,7 +137,7 @@ public class ImageProcessor
         buildGisto();
 
         int peakCount = Integer.MAX_VALUE;
-        int border = Integer.MAX_VALUE;;
+        int border = Integer.MAX_VALUE;
         while (true)
         {
             for (int i = 1; i < COLOR_COUNT-1; ++i)
