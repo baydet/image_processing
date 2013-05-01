@@ -13,6 +13,10 @@ import java.io.IOException;
  */
 public class ImagePanel extends JPanel
 {
+    public static final String SIMPLY_SEGM = "to grayscale";
+    public static final String ROUND_N_TIMES = "restore";
+    public static final String ROUND_TO_N_SEGM = "invert";
+
     public ImageProcessor imageProcessor;
 
     public ImagePanel() {
@@ -55,6 +59,30 @@ public class ImagePanel extends JPanel
             if (r > 255 || r < 0)
                 return;
             imageProcessor.toBinary(r);
+        }
+        catch (Exception ignored){}
+
+    }
+
+    public void makeSegmentation(String type) {
+        String request = "";
+        if(type.equals(SIMPLY_SEGM))
+            request = "Enter simply segments count";
+        else if(type.equals(ROUND_N_TIMES))
+            request = "Enter rounding count";
+        else if(type.equals(ROUND_TO_N_SEGM))
+            request = "Enter smart segments count";
+        Object result = JOptionPane.showInputDialog(this, request);
+        try{
+            int r = Integer.parseInt((String) result);
+            if (r > 255 || r < 0)
+                return;
+            if(type.equals(SIMPLY_SEGM))
+                imageProcessor.simplySegmentation(r);
+            else if(type.equals(ROUND_N_TIMES)){}
+//                request = "Enter rounding count";
+            else if(type.equals(ROUND_TO_N_SEGM))    {}
+//                request = "Enter smart segments count";
         }
         catch (Exception ignored)
         {

@@ -20,9 +20,13 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String MANUAL = "manual";
     public static final String GLOBAL_AUTO = "global auto";
     public static final String LOCAL_AUTO = "local auto";
+    public static final String SIMPLY_SEGM = "simply";
+    public static final String ROUND_N_TIMES = "round N times";
+    public static final String ROUND_TO_N_SEGM = "round to N segments";
     private final JMenu secondMenu;
     private ImagePanel sp;
     private final JMenu firstMenu;
+    private JMenu thirdMenu;
 
     public void addToFirstMenu(String name)
     {
@@ -38,6 +42,13 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         secondMenu.add(invert);
     }
 
+    public void addToThirdMenu(String name)
+    {
+        JMenuItem invert = new JMenuItem(name);
+        invert.addActionListener(this);
+        thirdMenu.add(invert);
+    }
+
     public InternalFrame(String s) {
         super(s);
         this.setClosable(true);
@@ -47,6 +58,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
 
         firstMenu = new JMenu("Actions");
         secondMenu = new JMenu("Binarisation");
+        thirdMenu = new JMenu("Segmentation");
 
         addToFirstMenu(TO_GRAYSCALE);
         addToFirstMenu(INVERT);
@@ -57,10 +69,16 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         addToSecondMenu(GLOBAL_AUTO);
         addToSecondMenu(LOCAL_AUTO);
 
+        addToThirdMenu(SIMPLY_SEGM);
+        addToThirdMenu(ROUND_N_TIMES);
+        addToThirdMenu(ROUND_TO_N_SEGM);
+
+
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(firstMenu);
         menuBar.add(secondMenu);
+        menuBar.add(thirdMenu);
 
         this.setJMenuBar(menuBar);
 
@@ -95,8 +113,11 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.manualBinarisation();
         else if(item.getText().equals(GLOBAL_AUTO))
             InternalFrame.this.sp.imageProcessor.findBorder();
-//            InternalFrame.this.sp.imageProcessor.getGistogramm();
         else if(item.getText().equals(MANUAL))    {}
+        else if(item.getText().equals(SIMPLY_SEGM))
+            InternalFrame.this.sp.makeSegmentation(ImagePanel.SIMPLY_SEGM);
+        else if(item.getText().equals(ROUND_N_TIMES))    {}
+        else if(item.getText().equals(ROUND_TO_N_SEGM))    {}
 //            InternalFrame.this.sp.imageProcessor.getGistogramm();
     }
 }

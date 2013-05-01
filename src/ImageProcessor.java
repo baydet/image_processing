@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +11,18 @@ import java.awt.image.WritableRaster;
  * Time: 2:50 PM
  * To change this template use File | Settings | File Templates.
  */
+
+class Segment
+{
+    public int l, r, b;
+
+    public Segment(int _l, int _r, int _b)
+    {
+        super();
+        l = _l; r = _r; b = _b;
+    }
+}
+
 public class ImageProcessor
 {
     public static final int COLOR_COUNT = 256;
@@ -160,5 +173,44 @@ public class ImageProcessor
                 break;
         }
         toBinary(border);
+    }
+
+    public void simplySegmentation(int segments)
+    {
+        ArrayList<Segment> s = new ArrayList<Segment>();
+        int step = COLOR_COUNT/segments;
+        int l = 0;
+        int r = 0;
+        while (l < COLOR_COUNT - step)
+        {
+            r += step;
+            int m = (l + r)/2;
+            s.add(new Segment(l, r, m));
+            l += step;
+        }
+        this.applySegmentation(s);
+    }
+
+    private void applySegmentation(ArrayList<Segment> list)
+    {
+        int [] arr = new int[COLOR_COUNT];
+        for (Segment s: list)
+        {
+            for (int i = s.l; i < s.r; ++i)
+            {
+                arr[i] = s.b;
+            }
+        }
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                Color c = new Color(image.getRGB(i, j));
+                int gray = c.getRed();
+                gray = arr[gray];
+                image.setRGB(i, j, new Color(gray, gray, gray).getRGB());
+            }
+        }
+        ip.repaint();
     }
 }
