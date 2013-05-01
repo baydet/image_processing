@@ -12,10 +12,11 @@ import java.awt.image.WritableRaster;
  */
 public class ImageProcessor
 {
+    public static final int COLOR_COUNT = 256;
     private ImagePanel ip;
     private BufferedImage image;
     private BufferedImage originalImage;
-    private int [] gistoArr =  new int[256];
+    private int [] gistoArr =  new int[COLOR_COUNT];
 
 
     public ImageProcessor(BufferedImage image)
@@ -61,7 +62,7 @@ public class ImageProcessor
     public void restoreImage() {
         image = originalImage;
         originalImage = deepCopy(originalImage);
-        gistoArr =  new int[256];
+        gistoArr =  new int[COLOR_COUNT];
         ip.repaint();
     }
 
@@ -86,6 +87,12 @@ public class ImageProcessor
 
     public void getGistogramm()
     {
+        buildGisto();
+        GistoDialog d = new GistoDialog(gistoArr);
+    }
+
+    public void buildGisto()
+    {
         for (int i = 0; i < image.getWidth(); ++i)
         {
             for (int j = 0; j < image.getHeight(); ++j)
@@ -95,14 +102,18 @@ public class ImageProcessor
                 gistoArr[index]++;
             }
         }
-        GistoDialog d = new GistoDialog(gistoArr);
     }
 
     public void toBinary(int bound)
     {
-        for (int i = 0; i < image.getWidth(); ++i)
+        toBinary(bound, image.getWidth(), image.getHeight());
+    }
+
+    public void toBinary(int bound, int width, int height)
+    {
+        for (int i = 0; i < width; ++i)
         {
-            for (int j = 0; j < image.getHeight(); ++j)
+            for (int j = 0; j < height; ++j)
             {
                 Color c = new Color(image.getRGB(i, j));
                 int gray = c.getRed();
@@ -111,5 +122,42 @@ public class ImageProcessor
             }
         }
         ip.repaint();
+    }
+
+
+    public void findBorder() {
+        findBorder(0, 0, image.getWidth(), image.getHeight());
+    }
+
+    public void findBorder(int x, int y, int width, int height)
+    {
+        restoreImage();
+        toGrayscale();
+        buildGisto();
+
+        int peakCount = Integer.MAX_VALUE;
+        int border = Integer.MAX_VALUE;;
+        while (true)
+        {
+            for (int i = 1; i < COLOR_COUNT-1; ++i)
+            {
+                gistoArr[i] = (gistoArr[i-1]+gistoArr[i+1])/2;
+            }
+            peakCount = 0;
+            border = COLOR_COUNT;
+            for (int i = 1; i < COLOR_COUNT-1; ++i)
+            {
+                if (gistoArr[i] > gistoArr[i-1] && gistoArr[i] > gistoArr[i+1])
+                {
+                    ++peakCount;
+                    continue;
+                }
+                if (peakCount > 0 && gistoArr[i] < gistoArr[i-1] && gistoArr[i] < gistoArr[i+1])
+                    border = i;
+            }
+            if (peakCount <= 2)
+                break;
+        }
+        toBinary(border);
     }
 }

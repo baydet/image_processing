@@ -93,8 +93,8 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.imageProcessor.getGistogramm();
         else if(item.getText().equals(MANUAL))
             InternalFrame.this.sp.manualBinarisation();
-//            InternalFrame.this.sp.imageProcessor.getGistogramm();
-        else if(item.getText().equals(MANUAL))  {}
+        else if(item.getText().equals(GLOBAL_AUTO))
+            InternalFrame.this.sp.imageProcessor.findBorder();
 //            InternalFrame.this.sp.imageProcessor.getGistogramm();
         else if(item.getText().equals(MANUAL))    {}
 //            InternalFrame.this.sp.imageProcessor.getGistogramm();

@@ -42,11 +42,12 @@ public class GistoDialog extends JDialog
         double xInc = (double)(w - 2*PAD)/(data.length-1);
         double scale = (double)(h - 2*PAD)/getMax();
         // Mark data points.
-        g2.setPaint(Color.DARK_GRAY);
+        g2.setPaint(Color.RED);
+        g2.setStroke(new BasicStroke((float) xInc + 1));
         for(int i = 0; i < data.length; i++) {
             double x = PAD + i*xInc;
             double y = h - PAD * 3 - scale*data[i];
-            g2.fill(new Ellipse2D.Double(x-2, y-2, 4, 4));
+            g2.fill(new Ellipse2D.Double(x - 2, y - 2, 4, 4));
             g2.draw(new Line2D.Double(x , h-PAD*3, x , y + 3));
         }
     }
