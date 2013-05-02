@@ -96,7 +96,7 @@ public class MainWnd extends JFrame implements ActionListener {
         this.internalFrameCounter += 1;
 
         InternalFrame iframe = new InternalFrame("new wnd");
-        iframe.setSize(new Dimension(400, 400));
+        iframe.setSize(new Dimension(500, 500));
         iframe.setVisible(true);
         iframe.setEnabled(true);
         iframe.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {

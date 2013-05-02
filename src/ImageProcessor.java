@@ -272,4 +272,56 @@ public class ImageProcessor
         ip.repaint();
     }
 
+    public void getBinaryContour()
+    {
+        findBorder();
+        int [][]arr = new int[image.getWidth()][image.getHeight()];
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 1; j < image.getHeight(); ++j)
+            {
+                Color c1 = new Color(image.getRGB(i, j));
+                Color c2 = new Color(image.getRGB(i, j-1));
+                int black = c1.getRed();
+                if (c1.getRed() != c2.getRed()){
+                    if (black == COLOR_COUNT - 1){
+                        arr[i][j] += 1;
+                    }
+                    else
+                    {
+                        arr[i][j-1] += 1;
+                    }
+                }
+            }
+        }
+        for (int j = 0; j < image.getHeight(); ++j)
+        {
+            for (int i = 1; i < image.getWidth(); ++i)
+            {
+                Color c1 = new Color(image.getRGB(i, j));
+                Color c2 = new Color(image.getRGB(i-1, j));
+                int black = c1.getRed();
+                if (c1.getRed() != c2.getRed()){
+                    if (black == COLOR_COUNT - 1){
+                        arr[i][j] += 1;
+                    }
+                    else
+                    {
+                        arr[i-1][j] += 1;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                int c = 255;
+                if (arr[i][j] > 0)
+                    c = 0;
+                image.setRGB(i, j, new Color(c, c, c).getRGB());
+            }
+        }
+        ip.repaint();
+    }
 }

@@ -23,30 +23,19 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String SIMPLY_SEGM = "simply";
     public static final String ROUND_N_TIMES = "round N times";
     public static final String ROUND_TO_N_SEGM = "round to N segments";
+    public static final String BINARY_CONTOUR = "binary contour";
+    public static final String GRAY_CONTOUR = "gray contour";
     private final JMenu secondMenu;
+    private final JMenu fourthMenu;
     private ImagePanel sp;
     private final JMenu firstMenu;
     private JMenu thirdMenu;
 
-    public void addToFirstMenu(String name)
+    public void addItemToMenu(JMenu menu, String name)
     {
         JMenuItem invert = new JMenuItem(name);
         invert.addActionListener(this);
-        firstMenu.add(invert);
-    }
-
-    public void addToSecondMenu(String name)
-    {
-        JMenuItem invert = new JMenuItem(name);
-        invert.addActionListener(this);
-        secondMenu.add(invert);
-    }
-
-    public void addToThirdMenu(String name)
-    {
-        JMenuItem invert = new JMenuItem(name);
-        invert.addActionListener(this);
-        thirdMenu.add(invert);
+        menu.add(invert);
     }
 
     public InternalFrame(String s) {
@@ -59,19 +48,23 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         firstMenu = new JMenu("Actions");
         secondMenu = new JMenu("Binarisation");
         thirdMenu = new JMenu("Segmentation");
+        fourthMenu = new JMenu("Contours");
 
-        addToFirstMenu(TO_GRAYSCALE);
-        addToFirstMenu(INVERT);
-        addToFirstMenu(GISTOGRAMM);
-        addToFirstMenu(RESTORE);
+        addItemToMenu(firstMenu, TO_GRAYSCALE);
+        addItemToMenu(firstMenu, INVERT);
+        addItemToMenu(firstMenu, GISTOGRAMM);
+        addItemToMenu(firstMenu, RESTORE);
 
-        addToSecondMenu(MANUAL);
-        addToSecondMenu(GLOBAL_AUTO);
-        addToSecondMenu(LOCAL_AUTO);
+        addItemToMenu(secondMenu, MANUAL);
+        addItemToMenu(secondMenu, GLOBAL_AUTO);
+        addItemToMenu(secondMenu, LOCAL_AUTO);
 
-        addToThirdMenu(SIMPLY_SEGM);
-        addToThirdMenu(ROUND_N_TIMES);
-        addToThirdMenu(ROUND_TO_N_SEGM);
+        addItemToMenu(thirdMenu, SIMPLY_SEGM);
+        addItemToMenu(thirdMenu, ROUND_N_TIMES);
+        addItemToMenu(thirdMenu, ROUND_TO_N_SEGM);
+
+        addItemToMenu(fourthMenu, BINARY_CONTOUR);
+        addItemToMenu(fourthMenu, GRAY_CONTOUR);
 
 
 
@@ -79,6 +72,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         menuBar.add(firstMenu);
         menuBar.add(secondMenu);
         menuBar.add(thirdMenu);
+        menuBar.add(fourthMenu);
 
         this.setJMenuBar(menuBar);
 
@@ -120,5 +114,9 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_N_TIMES);
         else if(item.getText().equals(ROUND_TO_N_SEGM))
             InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_TO_N_SEGM);
+        else if(item.getText().equals(BINARY_CONTOUR))
+            InternalFrame.this.sp.imageProcessor.getBinaryContour();
+        else if(item.getText().equals(GRAY_CONTOUR))                        {}
+//            InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_TO_N_SEGM);
     }
 }
