@@ -324,4 +324,62 @@ public class ImageProcessor
         }
         ip.repaint();
     }
+
+    public void getGrayContour(int step, int deepLevel) {
+        restoreImage();
+        toGrayscale();
+
+        int [][]arr = new int[image.getWidth()][image.getHeight()];
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight() - step; ++j)
+            {
+                int min = Integer.MAX_VALUE;
+                int max = Integer.MIN_VALUE;
+                for (int k = j; k < j + step; ++k)
+                {
+                    Color c1 = new Color(image.getRGB(i, k));
+                    if (c1.getRed() < min)
+                        min = c1.getRed();
+                    if (c1.getRed() > max)
+                        max = c1.getRed();
+                }
+                if (max - min > deepLevel)
+                {
+                    arr[i][j + step/2] += 1;
+                }
+            }
+        }
+        for (int j = 0; j < image.getHeight(); ++j)
+        {
+            for (int i = 0; i < image.getWidth() - step; ++i)
+            {
+                int min = Integer.MAX_VALUE;
+                int max = Integer.MIN_VALUE;
+                for (int k = i; k < i + step; ++k)
+                {
+                    Color c1 = new Color(image.getRGB(k, j));
+                    if (c1.getRed() < min)
+                        min = c1.getRed();
+                    if (c1.getRed() > max)
+                        max = c1.getRed();
+                }
+                if (max - min > deepLevel)
+                {
+                    arr[i + step/2][j] += 1;
+                }
+            }
+        }
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                int c = new Color(image.getRGB(i, j)).getRed();
+                if (arr[i][j] == 0)
+                    c = 255;
+                image.setRGB(i, j, new Color(c, c, c).getRGB());
+            }
+        }
+        ip.repaint();
+    }
 }

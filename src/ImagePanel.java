@@ -88,4 +88,37 @@ public class ImagePanel extends JPanel
         {
         }
     }
+
+    public void getGrayContour()
+    {
+        JPanel panel=new JPanel();
+        panel.setLayout(new GridLayout(4,1));
+        JLabel username=new JLabel("step");
+        JLabel password=new JLabel("deep level");
+        JTextField textField=new JTextField(12);
+        JTextField passwordField=new JTextField(12);
+        panel.add(username);
+        panel.add(textField);
+        panel.add(password);
+        panel.add(passwordField);
+        int a=JOptionPane.showConfirmDialog(this, panel,"Put username and password",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if(a==JOptionPane.OK_OPTION)
+        {
+            try{
+                int step = Integer.parseInt(textField.getText());
+                int deepLevel = Integer.parseInt(passwordField.getText());
+                imageProcessor.getGrayContour(step, deepLevel);
+            }
+            catch (Exception ignored)
+            {
+            }
+        }
+
+
+        else if(a==JOptionPane.CANCEL_OPTION)
+        {
+            return;
+        }
+    }
 }

@@ -116,7 +116,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_TO_N_SEGM);
         else if(item.getText().equals(BINARY_CONTOUR))
             InternalFrame.this.sp.imageProcessor.getBinaryContour();
-        else if(item.getText().equals(GRAY_CONTOUR))                        {}
-//            InternalFrame.this.sp.makeSegmentation(ImagePanel.ROUND_TO_N_SEGM);
+        else if(item.getText().equals(GRAY_CONTOUR))
+            InternalFrame.this.sp.getGrayContour();
     }
 }
