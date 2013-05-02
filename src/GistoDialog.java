@@ -45,10 +45,13 @@ public class GistoDialog extends JDialog
         g2.setPaint(Color.RED);
         g2.setStroke(new BasicStroke((float) xInc + 1));
         for(int i = 0; i < data.length; i++) {
-            double x = PAD + i*xInc;
-            double y = h - PAD * 3 - scale*data[i];
-            g2.fill(new Ellipse2D.Double(x - 2, y - 2, 4, 4));
-            g2.draw(new Line2D.Double(x , h-PAD*3, x , y + 3));
+            if (data[i] > 0)
+            {
+                double x = PAD + i*xInc;
+                double y = h - PAD * 3 - scale*data[i];
+//                g2.fill(new Ellipse2D.Double(x - 2, y - 2, 4, 4));
+                g2.draw(new Line2D.Double(x , h-PAD*3, x , y + 3));
+            }
         }
     }
 
