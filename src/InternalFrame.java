@@ -25,8 +25,11 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String ROUND_TO_N_SEGM = "round to N segments";
     public static final String BINARY_CONTOUR = "binary contour";
     public static final String GRAY_CONTOUR = "gray contour";
+    public static final String MEDIAN_FILTER = "median filter";
+    public static final String MIDDLE_FILTER = "middle filter";
     private final JMenu secondMenu;
     private final JMenu fourthMenu;
+    private final JMenu fivsMenu;
     private ImagePanel sp;
     private final JMenu firstMenu;
     private JMenu thirdMenu;
@@ -49,6 +52,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         secondMenu = new JMenu("Binarisation");
         thirdMenu = new JMenu("Segmentation");
         fourthMenu = new JMenu("Contours");
+        fivsMenu = new JMenu("Filters");
 
         addItemToMenu(firstMenu, TO_GRAYSCALE);
         addItemToMenu(firstMenu, INVERT);
@@ -66,6 +70,9 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         addItemToMenu(fourthMenu, BINARY_CONTOUR);
         addItemToMenu(fourthMenu, GRAY_CONTOUR);
 
+        addItemToMenu(fivsMenu, MEDIAN_FILTER);
+        addItemToMenu(fivsMenu, MIDDLE_FILTER);
+
 
 
         JMenuBar menuBar = new JMenuBar();
@@ -73,13 +80,14 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         menuBar.add(secondMenu);
         menuBar.add(thirdMenu);
         menuBar.add(fourthMenu);
+        menuBar.add(fivsMenu);
 
         this.setJMenuBar(menuBar);
 
         sp = new ImagePanel();
         this.add(sp);
 
-        this.setImage("/Users/astrokin/Desktop/Lenna.png");
+        this.setImage("Lenna.png");
     }
 
     public void setImage(String path)
@@ -118,5 +126,9 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.imageProcessor.getBinaryContour();
         else if(item.getText().equals(GRAY_CONTOUR))
             InternalFrame.this.sp.getGrayContour();
+        else if(item.getText().equals(MEDIAN_FILTER)) {}
+//            InternalFrame.this.sp.getGrayContour();
+        else if(item.getText().equals(MIDDLE_FILTER))   {}
+//            InternalFrame.this.sp.getGrayContour();
     }
 }
