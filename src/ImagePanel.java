@@ -16,8 +16,11 @@ public class ImagePanel extends JPanel
     public static final String SIMPLY_SEGM = "to grayscale";
     public static final String ROUND_N_TIMES = "restore";
     public static final String ROUND_TO_N_SEGM = "invert";
+    public static final String MEDIAN = "median";
+    public static final String MIDDLE = "middle";
 
     public ImageProcessor imageProcessor;
+    public TextProcessor textProcessor;
 
     public ImagePanel() {
         super();
@@ -120,5 +123,27 @@ public class ImagePanel extends JPanel
         {
             return;
         }
+    }
+
+    public void filterImage(String type)
+    {
+        Object result = JOptionPane.showInputDialog(this, "enter grid size");
+        try{
+            int r = Integer.parseInt((String) result);
+            if (r > 255 || r < 0)
+                return;
+            if(type.equals(MEDIAN))
+                imageProcessor.simplySegmentation(r);
+            else if(type.equals(MIDDLE)){}
+        }
+        catch (Exception ignored)
+        {
+        }
+    }
+
+    public void recognize() {
+        this.imageProcessor.restoreImage();
+        this.imageProcessor.findBorder();
+        this.textProcessor.recognize(this.imageProcessor.getImage());
     }
 }

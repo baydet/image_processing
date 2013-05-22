@@ -27,9 +27,11 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String GRAY_CONTOUR = "gray contour";
     public static final String MEDIAN_FILTER = "median filter";
     public static final String MIDDLE_FILTER = "middle filter";
+    public static final String RECOGNITION = "Recognition";
     private final JMenu secondMenu;
     private final JMenu fourthMenu;
     private final JMenu fivsMenu;
+    private final JMenu sixMenu;
     private ImagePanel sp;
     private final JMenu firstMenu;
     private JMenu thirdMenu;
@@ -53,6 +55,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         thirdMenu = new JMenu("Segmentation");
         fourthMenu = new JMenu("Contours");
         fivsMenu = new JMenu("Filters");
+        sixMenu = new JMenu("Recognition");
 
         addItemToMenu(firstMenu, TO_GRAYSCALE);
         addItemToMenu(firstMenu, INVERT);
@@ -73,7 +76,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         addItemToMenu(fivsMenu, MEDIAN_FILTER);
         addItemToMenu(fivsMenu, MIDDLE_FILTER);
 
-
+        addItemToMenu(sixMenu, RECOGNITION);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(firstMenu);
@@ -126,9 +129,11 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.imageProcessor.getBinaryContour();
         else if(item.getText().equals(GRAY_CONTOUR))
             InternalFrame.this.sp.getGrayContour();
-        else if(item.getText().equals(MEDIAN_FILTER)) {}
-//            InternalFrame.this.sp.getGrayContour();
-        else if(item.getText().equals(MIDDLE_FILTER))   {}
-//            InternalFrame.this.sp.getGrayContour();
+        else if(item.getText().equals(MEDIAN_FILTER))
+            InternalFrame.this.sp.filterImage(ImagePanel.MEDIAN);
+        else if(item.getText().equals(MIDDLE_FILTER))
+            InternalFrame.this.sp.filterImage(ImagePanel.MIDDLE);
+        else if(item.getText().equals(RECOGNITION))
+            InternalFrame.this.sp.recognize();
     }
 }
