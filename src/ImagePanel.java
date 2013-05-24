@@ -22,9 +22,10 @@ public class ImagePanel extends JPanel
     public ImageProcessor imageProcessor;
     public TextProcessor textProcessor;
 
-    public ImagePanel() {
+    public ImagePanel() throws IOException {
         super();
         imageProcessor = new ImageProcessor(this);
+        textProcessor = new TextProcessor(this);
     }
 
     @Override
@@ -143,7 +144,6 @@ public class ImagePanel extends JPanel
 
     public void recognize() {
         this.imageProcessor.restoreImage();
-        this.imageProcessor.findBorder();
         this.textProcessor.recognize(this.imageProcessor.getImage());
     }
 }

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +28,7 @@ public class MainWnd extends JFrame implements ActionListener {
     public MainWnd()
     {
         this.internalFrameCounter = 0;
-        this.setSize(500, 500);
+        this.setSize(700, 700);
         this.createDesktop();
         this.createMenus();
         this.internalFrames = new ArrayList<JInternalFrame>();
@@ -35,6 +36,8 @@ public class MainWnd extends JFrame implements ActionListener {
             this.createInternalWnd();
         } catch (PropertyVetoException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
@@ -71,6 +74,8 @@ public class MainWnd extends JFrame implements ActionListener {
                 MainWnd.this.createInternalWnd();
             } catch (PropertyVetoException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
         else if(item.getText() == "Open Image")
@@ -92,7 +97,7 @@ public class MainWnd extends JFrame implements ActionListener {
         }
     }
 
-    private void createInternalWnd() throws PropertyVetoException {
+    private void createInternalWnd() throws PropertyVetoException, IOException {
         this.internalFrameCounter += 1;
 
         InternalFrame iframe = new InternalFrame("new wnd");

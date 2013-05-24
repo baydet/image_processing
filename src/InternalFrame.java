@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,11 +44,12 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         menu.add(invert);
     }
 
-    public InternalFrame(String s) {
+    public InternalFrame(String s) throws IOException {
         super(s);
         this.setClosable(true);
         this.setIconifiable(true);
         this.setMaximizable(true);
+        this.setSize(650, 650);
         this.setResizable(true);
 
         firstMenu = new JMenu("Actions");
@@ -84,13 +86,15 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         menuBar.add(thirdMenu);
         menuBar.add(fourthMenu);
         menuBar.add(fivsMenu);
+        menuBar.add(sixMenu);
+
 
         this.setJMenuBar(menuBar);
 
         sp = new ImagePanel();
         this.add(sp);
 
-        this.setImage("Lenna.png");
+        this.setImage("texttest.png");
     }
 
     public void setImage(String path)
