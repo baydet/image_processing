@@ -29,6 +29,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
     public static final String MEDIAN_FILTER = "median filter";
     public static final String MIDDLE_FILTER = "middle filter";
     public static final String RECOGNITION = "Recognition";
+    public static final String CONTRAST_INCREASING = "Contrast increasing";
     private final JMenu secondMenu;
     private final JMenu fourthMenu;
     private final JMenu fivsMenu;
@@ -59,6 +60,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         fivsMenu = new JMenu("Filters");
         sixMenu = new JMenu("Recognition");
 
+
         addItemToMenu(firstMenu, TO_GRAYSCALE);
         addItemToMenu(firstMenu, INVERT);
         addItemToMenu(firstMenu, GISTOGRAMM);
@@ -77,6 +79,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
 
         addItemToMenu(fivsMenu, MEDIAN_FILTER);
         addItemToMenu(fivsMenu, MIDDLE_FILTER);
+        addItemToMenu(fivsMenu, CONTRAST_INCREASING);
 
         addItemToMenu(sixMenu, RECOGNITION);
 
@@ -94,7 +97,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
         sp = new ImagePanel();
         this.add(sp);
 
-        this.setImage("texttest.png");
+        this.setImage("Lenna.png");
     }
 
     public void setImage(String path)
@@ -139,5 +142,7 @@ public class InternalFrame extends JInternalFrame implements ActionListener {
             InternalFrame.this.sp.filterImage(ImagePanel.MIDDLE);
         else if(item.getText().equals(RECOGNITION))
             InternalFrame.this.sp.recognize();
+        else if(item.getText().equals(CONTRAST_INCREASING))
+            InternalFrame.this.sp.increaseContrast();
     }
 }

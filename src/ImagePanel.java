@@ -153,4 +153,36 @@ public class ImagePanel extends JPanel
         int a=JOptionPane.showConfirmDialog(this, panel,"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 
     }
+
+    public void increaseContrast() {
+        JPanel panel=new JPanel();
+        panel.setLayout(new GridLayout(4,1));
+        JLabel username=new JLabel("bright min");
+        JLabel password=new JLabel("bright max");
+        JTextField textField=new JTextField(12);
+        JTextField passwordField=new JTextField(12);
+        panel.add(username);
+        panel.add(textField);
+        panel.add(password);
+        panel.add(passwordField);
+        int a=JOptionPane.showConfirmDialog(this, panel,"brightness levels",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if(a==JOptionPane.OK_OPTION)
+        {
+            try{
+                int min = Integer.parseInt(textField.getText());
+                int max = Integer.parseInt(passwordField.getText());
+                imageProcessor.contrastIncrease(min, max);
+            }
+            catch (Exception ignored)
+            {
+            }
+        }
+
+
+        else if(a==JOptionPane.CANCEL_OPTION)
+        {
+            return;
+        }
+    }
 }

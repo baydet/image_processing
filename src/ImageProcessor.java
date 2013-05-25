@@ -32,6 +32,8 @@ public class ImageProcessor
     private BufferedImage image;
     private BufferedImage originalImage;
     private int [] gistoArr =  new int[COLOR_COUNT];
+    private int minB;
+    private int maxB;
 
 
     public ImageProcessor(BufferedImage image)
@@ -378,6 +380,40 @@ public class ImageProcessor
                 if (arr[i][j] == 0)
                     c = 255;
                 image.setRGB(i, j, new Color(c, c, c).getRGB());
+            }
+        }
+        ip.repaint();
+    }
+
+    public void getBorders()
+    {
+        this.minB = Integer.MAX_VALUE;
+        this.maxB = Integer.MIN_VALUE;
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                int c = new Color(image.getRGB(i, j)).getRed();
+                if (c > maxB)
+                    maxB = c;
+                if (c < minB)
+                    minB = c;
+            }
+        }
+    }
+
+    public void contrastIncrease(int min, int max)
+    {
+        restoreImage();
+        toGrayscale();
+        getBorders();
+        for (int i = 0; i < image.getWidth(); ++i)
+        {
+            for (int j = 0; j < image.getHeight(); ++j)
+            {
+                int c = new Color(image.getRGB(i, j)).getRed();
+                int c2 = (c - minB)*(max - min)/(maxB - minB) + min;
+                image.setRGB(i, j, new Color(c2, c2, c2).getRGB());
             }
         }
         ip.repaint();
