@@ -17,7 +17,7 @@ public class TextProcessor {
 
     public static final int H_STEP = 5;
     public static final int W_STEP = 5;
-    public static final double EMPTY_EPS = 0.01;
+    public static final double EMPTY_EPS = 0.0001;
     public static final double LET_EPS = 0.85;
     private final int letHeight;
     private final int letWidth;
@@ -49,7 +49,7 @@ public class TextProcessor {
                 "0","1","2","3","4","5","6","7","8","9",",","?","!",".",":",";","'","[","]","{","}","(",")","-","_", "_"};
         this.letList = new ArrayList<Letter>();
         this.letWidth = 16;
-        this.letHeight = 25;
+        this.letHeight = 27;
         this.heightCount = 9;
         this.widthCount = 11;
         int index = 0;
@@ -82,18 +82,19 @@ public class TextProcessor {
         int i;
         this.returnText = new StringBuilder("");
 
-        for (i = 0; i < letHeight; i += H_STEP)
+        for (i = 0; i < imh; i += letHeight)
         {
-            if (isEmptyLine(i))
-            {
-                returnText.append("\n");
-            }
-            else
+//            if (isEmptyLine(i))
+//            {
+//                returnText.append("<NEW_LINEff>");
+//            }
+//            else
             {
                 for (int j = 0; j < imw; j += letWidth) {
-                    this.returnText.append(analyzeLetter(i, j));
+                    this.returnText.append(analyzeLetter(j, i));
                     System.out.println(returnText);
                 }
+                returnText.append("<NEW_LINE>");
 
             }
         }
@@ -104,41 +105,95 @@ public class TextProcessor {
         int k = x0;
         int l;
         int percentCounter = 0;
+        int blackCounter = 0;
+        float pmax = (float) 0.0;
+        Letter candLet = null;
         for (Letter let: letList)
         {
             percentCounter = 0;
+            blackCounter = 0;
             for (int i = let.pos.x; i < let.pos.x + letWidth; ++i)
             {
                 if (i >= symbImage.getWidth() || k >= imw)
                     break;
                 l = y0;
-                for (int j = let.pos.x; j < let.pos.y + letHeight; j++)
+                for (int j = let.pos.y; j < let.pos.y + letHeight; j++)
                 {
                     if (j >= symbImage.getHeight() || l >= imh)
                         break;
                     Color c = new Color(image.getRGB(k, l));
                     int gray = c.getRed();
+//                    if (gray == 255)
+//                        gray = this.hasBlackAround(k, l);
 
                     Color c2 = new Color(symbImage.getRGB(i, j));
                     int gray2 = c2.getRed();
 
+                    if (gray2 == 0)
+                        blackCounter++;
+
                     if (gray == gray2)
                         ++percentCounter;
+                    else
+                    {
+                        gray = this.hasBlackAround(k, l);
+                        if (gray == gray2)
+                            ++percentCounter;
+                    }
                     ++l;
                 }
                 ++k;
             }
             k = x0;
 
-            float p = (float)percentCounter/((float)letHeight*letWidth);
+            float p = (float)percentCounter/((float)letHeight * letWidth);
+            if (p > pmax)
+            {
+                candLet = let;
+                pmax = p;
+            }
 //            if (p > LET_EPS)
 //            {
+            if (!let.value.equals("_"))
                 System.out.println(let.value + " - " + p + ", " + let.pos.x + ", " + let.pos.y);
 //                return let.value;
 //            }
         }
+        if (candLet != null)
+        {
+            if (candLet.value.equals("B"))
+                System.out.println("wowowow");
+            if (pmax > 0.5)
+                return candLet.value;
+        }
         return "";
     }
+
+    private int hasBlackAround(int k, int l) {
+        int res = 255;
+        res *= this.getColor(k-1, l-1);
+        res *= this.getColor(k-1, l);
+        res *= this.getColor(k-1, l+1);
+        res *= this.getColor(k+1, l-1);
+        res *= this.getColor(k+1, l);
+        res *= this.getColor(k+1, l+1);
+        if (res > 0)
+            return 255;
+        else
+            return 0;
+    }
+
+    private int getColor(int i, int j) {
+        if (i < imw && j < imh && i > 0 && j > 0)
+        {
+            Color c = new Color(image.getRGB(i, j));
+            if (c.getRed() == 0) {
+                return 0;
+            }
+        }
+        return 255;
+    }
+
 
     private boolean isEmptyLine(int index) {
         int blackCounter = 0;
@@ -163,8 +218,8 @@ public class TextProcessor {
             }
         }
         int totalCount = letHeight * imw;
-//        System.out.println(totalCount);
-        if ((float)blackCounter/(float)totalCount > EMPTY_EPS)
+//        System.out.println((float)blackCounter/(float)totalCount);
+        if ((float)blackCounter/(float)totalCount < EMPTY_EPS)
             return true;
         else
             return false;
