@@ -15,8 +15,8 @@ import java.util.ArrayList;
 public class TextProcessor {
 
 
-    public static final int H_STEP = 5;
-    public static final int W_STEP = 5;
+    public static final int H_STEP = 1;
+    public static final int W_STEP = 3;
     public static final double EMPTY_EPS = 0.0001;
     public static final double LET_EPS = 0.85;
     private final int letHeight;
@@ -46,7 +46,7 @@ public class TextProcessor {
     public TextProcessor(ImagePanel imagePanel)  {
         String [] symSet =  {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
                 "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-                "0","1","2","3","4","5","6","7","8","9",",","?","!",".",":",";","'","[","]","{","}","(",")","-","_", "_"};
+                "0","1","2","3","4","5","6","7","8","9",",","?","!"," ",":",";","'","[","]","{","}","(",")","-","_", " "};
         this.letList = new ArrayList<Letter>();
         this.letWidth = 16;
         this.letHeight = 27;
@@ -74,7 +74,7 @@ public class TextProcessor {
         }
     }
 
-    public void recognize(BufferedImage image)
+    public String recognize(BufferedImage image)
     {
         this.image = image;
         this.imw = image.getWidth();
@@ -84,21 +84,25 @@ public class TextProcessor {
 
         for (i = 0; i < imh; i += letHeight)
         {
-//            if (isEmptyLine(i))
-//            {
-//                returnText.append("<NEW_LINEff>");
-//            }
-//            else
+//            isEmptyLine(i);
+            if (isEmptyLine(i))
+            {
+                returnText.append("\n");
+            }
+            else
             {
                 for (int j = 0; j < imw; j += letWidth) {
                     this.returnText.append(analyzeLetter(j, i));
-                    System.out.println(returnText);
+//                    System.out.println(returnText);
                 }
-                returnText.append("<NEW_LINE>");
+                returnText.append("\n");
 
             }
+            System.out.println(returnText);
         }
+
         System.out.println("done");
+        return returnText.toString();
     }
 
     private String analyzeLetter(int x0, int y0) {
@@ -154,15 +158,15 @@ public class TextProcessor {
             }
 //            if (p > LET_EPS)
 //            {
-            if (!let.value.equals("_"))
-                System.out.println(let.value + " - " + p + ", " + let.pos.x + ", " + let.pos.y);
+//            if (!let.value.equals("_"))
+//                System.out.println(let.value + " - " + p + ", " + let.pos.x + ", " + let.pos.y);
 //                return let.value;
 //            }
         }
         if (candLet != null)
         {
-            if (candLet.value.equals("B"))
-                System.out.println("wowowow");
+//            if (candLet.value.equals(";"))
+//                System.out.println("wowowow");
             if (pmax > 0.5)
                 return candLet.value;
         }
@@ -197,7 +201,7 @@ public class TextProcessor {
 
     private boolean isEmptyLine(int index) {
         int blackCounter = 0;
-        for (int i = index * letHeight; (i < (index + 1) * letHeight && (index + 1) * i <= imh); i += H_STEP) {
+        for (int i = index; i < index + letHeight; i += H_STEP) {
             if (i >= imh)
                 break;
             for (int j = 0; j < this.imw; j += W_STEP) {
@@ -218,8 +222,9 @@ public class TextProcessor {
             }
         }
         int totalCount = letHeight * imw;
-//        System.out.println((float)blackCounter/(float)totalCount);
-        if ((float)blackCounter/(float)totalCount < EMPTY_EPS)
+        System.out.println((float)blackCounter);
+        if (blackCounter == 0)
+//        if ((float)blackCounter/(float)totalCount < EMPTY_EPS)
             return true;
         else
             return false;

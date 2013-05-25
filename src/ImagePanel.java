@@ -144,6 +144,13 @@ public class ImagePanel extends JPanel
 
     public void recognize() {
         this.imageProcessor.restoreImage();
-        this.textProcessor.recognize(this.imageProcessor.getImage());
+        String str = this.textProcessor.recognize(this.imageProcessor.getImage());
+        JPanel panel=new JPanel();
+//        panel.setLayout(new GridLayout(4,1));
+        JTextArea area = new JTextArea();
+        area.setText(str);
+        panel.add(area);
+        int a=JOptionPane.showConfirmDialog(this, panel,"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+
     }
 }
